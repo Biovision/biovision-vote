@@ -1,5 +1,9 @@
-# Biovision::Vote
-Short description and motivation.
+Biovision::Vote
+===============
+
+Модуль голосования для приложений на базе `biovision-base`.
+
+Используйте на свой страх и риск без каких-либо гарантий.
 
 ## Usage
 How to use my plugin.

@@ -14,7 +14,8 @@ GIT
 PATH
   remote: .
   specs:
-    biovision-vote (0.1.0)
+    biovision-vote (0.1.0.170330)
+      kaminari
       rails (~> 5.0.2)
       rails-i18n (~> 5.0.0)
 
