@@ -1,0 +1,29 @@
+ru:
+  upvote_count:
+    zero: "голосов «за» нет"
+    one: "%{count} голос «за»"
+    few: "%{count} голоса «за»"
+    many: "%{count} голосов «за»"
+    other: "%{count} голосов «за»"
+  downvote_count:
+    zero: "голосов «против» нет"
+    one: "%{count} голос «против»"
+    few: "%{count} голоса «против»"
+    many: "%{count} голосов «против»"
+    other: "%{count} голосов «против»"
+  activerecord:
+    models:
+      vote: "Голос"
+    attributes:
+      vote:
+        user: "Пользователь"
+        votable: "Объект голосования"
+        agent: "Агент пользователя"
+        ip: "IP-адрес"
+        delta: "Изменение"
+  admin:
+    votes:
+      index:
+        title: "Голоса, страница %{page}"
+        heading: "Голоса пользователей"
+        description: "Просмотр голосов пользователей"

@@ -3,13 +3,19 @@ class Vote < ApplicationRecord
 
   PER_PAGE = 20
 
+  METRIC_VOTE_HIT     = 'votes.any.hit'
+  METRIC_UPVOTE_HIT   = 'votes.upvote.hit'
+  METRIC_DOWNVOTE_HIT = 'votes.downvote.hit'
+
   belongs_to :user, optional: true
   belongs_to :agent, optional: true
   belongs_to :votable, polymorphic: true
 
+  before_validation { self.delta = (delta.to_i > 0 ? 1 : -1) }
   validates_uniqueness_of :votable, scope: [:user]
 
-  after_save :cache_vote_result
+  after_create :add_vote_result
+  after_destroy :discard_vote_result
 
   scope :recent, -> { order('id desc') }
 
@@ -33,6 +39,10 @@ class Vote < ApplicationRecord
     votable.vote_result
   end
 
+  def self.creation_parameters
+    %i(votable_id votable_type delta)
+  end
+
   def upvote?
     delta >= 0
   end
@@ -43,10 +53,17 @@ class Vote < ApplicationRecord
 
   private
 
-  def cache_vote_result
+  def add_vote_result
     votable.vote_result    = votable.vote_result + delta
     votable.upvote_count   = votable.upvote_count + 1 if upvote?
     votable.downvote_count = votable.downvote_count + 1 if downvote?
+    votable.save
+  end
+
+  def discard_vote_result
+    votable.vote_result    = votable.vote_result - delta
+    votable.upvote_count   = votable.upvote_count - 1 if upvote?
+    votable.downvote_count = votable.downvote_count - 1 if downvote?
     votable.save
   end
 end

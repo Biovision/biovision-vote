@@ -5,8 +5,26 @@ Biovision::Vote
 
 Используйте на свой страх и риск без каких-либо гарантий.
 
-## Usage
-How to use my plugin.
+Использование
+-------------
+
+Для возможности голосовать за модель у неё должны быть поля такого вида:
+
+```ruby
+class AddVotableToModels < ActiveRecord::Migration[5.0]
+  def change
+    add_column :posts, :upvote_count, :integer, default: 0, null: false
+    add_column :posts, :downvote_count, :integer, default: 0, null: false
+    add_column :posts, :vote_result, :integer, default: 0, null: false
+  end
+end
+```
+
+Функционал примешивается через `include Votable`.
+
+По умолчанию голосовать за сущности могут только авторизованные пользователи.
+Допустимость голосования определяется методом `Votable#votable_by?`, который
+можно переопределить в моделях, если требуется.
 
 ## Installation
 Add this line to your application's Gemfile:
