@@ -1,0 +1,14 @@
+<% block_class = votable.votable_by?(current_user) ? 'active' : '' %>
+<div class="vote-block <%= block_class %> voted-<%= votable.voted(current_user) %>" data-id="<%= votable.id %>">
+  <div class="vote upvote"></div>
+  <div class="result"><%= votable.vote_result %></div>
+  <div class="vote downvote"></div>
+  <% unless block_class.blank? %>
+      <% entity = Vote.new(votable: votable) %>
+      <%= form_tag votes_path, method: :post do %>
+          <%= hidden_field_tag 'vote[votable_id]', entity.votable_id, id: "vote_votable_id_#{votable.id}" %>
+          <%= hidden_field_tag 'vote[votable_type]', entity.votable_type, id: "vote_votable_type_#{votable.id}" %>
+          <%= hidden_field_tag 'vote[delta]', '0', id: "vote_delta_#{votable.id}" %>
+      <% end %>
+  <% end %>
+</div>

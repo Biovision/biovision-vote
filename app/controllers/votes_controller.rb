@@ -3,11 +3,9 @@ class VotesController < ApplicationController
   def create
     @entity = Vote.new(creation_parameters)
     if @entity.votable.votable_by?(current_user)
-      render :result, status: :unauthorized
-    elsif Vote.voted?(current_user, @entity.votable)
-      render :result, status: :conflict
+      process_vote
     else
-      count_vote
+      render :result, status: :unauthorized
     end
   end
 
@@ -29,6 +27,14 @@ class VotesController < ApplicationController
   def creation_parameters
     parameters = params.require(:vote).permit(Vote.creation_parameters)
     parameters.merge(owner_for_entity(true))
+  end
+
+  def process_vote
+    if Vote.voted?(current_user, @entity.votable)
+      render :result, status: :conflict
+    else
+      count_vote
+    end
   end
 
   def count_vote

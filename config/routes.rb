@@ -1,4 +1,4 @@
-Biovision::Vote::Engine.routes.draw do
+Rails.application.routes.draw do
   resources :votes, only: [:create, :destroy], defaults: { format: :json }
 
   namespace :admin do

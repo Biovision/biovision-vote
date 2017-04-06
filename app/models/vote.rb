@@ -12,7 +12,7 @@ class Vote < ApplicationRecord
   belongs_to :votable, polymorphic: true
 
   before_validation { self.delta = (delta.to_i > 0 ? 1 : -1) }
-  validates_uniqueness_of :votable, scope: [:user]
+  validates_uniqueness_of :votable_id, scope: [:user_id, :votable_type]
 
   after_create :add_vote_result
   after_destroy :discard_vote_result

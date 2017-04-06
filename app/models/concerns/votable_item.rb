@@ -1,4 +1,4 @@
-module Votable
+module VotableItem
   extend ActiveSupport::Concern
 
   included do
@@ -24,7 +24,7 @@ module Votable
   # @param [User] user
   def voted(user)
     vote = votes.find_by(user: user)
-    return if vote.nil?
+    return :none if vote.nil?
     vote.upvote? ? :upvote : :downvote
   end
 end
