@@ -1,5 +1,5 @@
 module Biovision
   module Vote
-    VERSION = '0.1.0.170330'
+    VERSION = '0.1.1.170517'
   end
 end

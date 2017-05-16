@@ -51,6 +51,11 @@ class Vote < ApplicationRecord
     delta < 0
   end
 
+  # @param [User] user
+  def editable_by?(user)
+    owned_by?(user) || UserPrivilege.user_has_privilege?(:user, :moderator)
+  end
+
   private
 
   def add_vote_result

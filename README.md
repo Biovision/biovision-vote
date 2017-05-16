@@ -20,11 +20,15 @@ class AddVotableToModels < ActiveRecord::Migration[5.0]
 end
 ```
 
-Функционал примешивается через `include Votable`.
+Функционал примешивается через `include VotableItem`.
 
 По умолчанию голосовать за сущности могут только авторизованные пользователи.
-Допустимость голосования определяется методом `Votable#votable_by?`, который
+Допустимость голосования определяется методом `VotableItem#votable_by?`, который
 можно переопределить в моделях, если требуется.
+
+Для ссылки на голосуемый объект в админке и за её пределами нужно в какой-нибудь
+помощник добавить методы `votable_item_link(entity)` 
+и `admin_votable_item_link(entity)`.
 
 ## Installation
 Add this line to your application's Gemfile:

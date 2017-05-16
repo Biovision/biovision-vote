@@ -1,0 +1,15 @@
+<div class="image">
+  <%= vote_image(entity) %>
+</div>
+<div class="data">
+  <div>
+    <%= entity.votable.model_name.human %>
+    <cite><%= admin_votable_link(entity.votable) %></cite>
+  </div>
+  <div class="info">
+    <%= admin_user_link(votable.user) %>
+  </div>
+  <div class="secondary info">
+    <%= time_tag(entity.created_at) %>
+  </div>
+</div>

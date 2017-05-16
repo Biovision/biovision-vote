@@ -23,7 +23,9 @@ ru:
         delta: "Изменение"
   admin:
     votes:
+      nav_item:
+        text: "Голоса пользователей"
+        description: "Просмотр голосов пользователей"
       index:
         title: "Голоса, страница %{page}"
         heading: "Голоса пользователей"
-        description: "Просмотр голосов пользователей"

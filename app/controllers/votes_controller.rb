@@ -1,4 +1,6 @@
 class VotesController < ApplicationController
+  before_action :set_entity, only: [:destroy]
+
   # post /votes
   def create
     @entity = Vote.new(creation_parameters)
@@ -18,8 +20,8 @@ class VotesController < ApplicationController
   private
 
   def set_entity
-    @entity = Vote.owned_by(current_user).find_by(id: params[:id])
-    if @entity.nil?
+    @entity = Vote.find_by(id: params[:id])
+    if @entity.nil? || !@entity.editable_by?(current_user)
       handle_http_404('Cannot find vote')
     end
   end
