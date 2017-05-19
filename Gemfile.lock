@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/Biovision/biovision-base
-  revision: 4ecc8b0d121dbcf9f41a41ee8ccc0de722ac627c
+  revision: d34ba67225c9dca3081d4b06e0ee44ce1941fc25
   specs:
-    biovision-base (0.4.170514)
+    biovision-base (0.4.170517)
       bcrypt (~> 3.1.7)
       carrierwave
       carrierwave-bombshelter
@@ -14,7 +14,7 @@ GIT
 PATH
   remote: .
   specs:
-    biovision-vote (0.1.0.170517)
+    biovision-vote (0.1.1.170517)
       kaminari
       rails (~> 5.1.1)
       rails-i18n (~> 5.0.0)
