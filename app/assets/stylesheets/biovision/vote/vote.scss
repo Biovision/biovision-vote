@@ -1,3 +1,5 @@
+$font-size-decreased: 1.2rem !default;
+
 .vote-block {
   align-items: center;
   display: flex;
@@ -76,7 +78,7 @@
   }
 
   .result {
-    font-size: $small-font-size;
+    font-size: $font-size-decreased;
     padding: 0 .8rem;
     text-align: center;
   }
