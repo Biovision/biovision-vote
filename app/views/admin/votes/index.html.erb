@@ -1,4 +1,4 @@
-<% content_for :meta_title, t('.title') %>
+<% content_for :meta_title, t('.title', page: current_page) %>
 <% content_for :breadcrumbs do %>
     <span><%= t('admin.votes.nav_item.text') %></span>
 <% end %>
