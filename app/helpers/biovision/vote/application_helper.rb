@@ -6,7 +6,7 @@ module Biovision
         if vote.upvote?
           image_tag('biovision/vote/icons/upvote-active.svg', alt: '⇧')
         else
-          image_tag('biovision/vote/icons/downvote-active.scg', alt: '⇩')
+          image_tag('biovision/vote/icons/downvote-active.svg', alt: '⇩')
         end
       end
     end
