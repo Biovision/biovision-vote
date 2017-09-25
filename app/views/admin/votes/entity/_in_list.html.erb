@@ -2,13 +2,7 @@
   <%= vote_image(entity) %>
 </div>
 <div class="data">
-  <div>
-    <%= biovision_votable_link(entity.votable) %>
-  </div>
-  <div class="info">
-    <%= admin_user_link(entity.user) %>
-  </div>
-  <div class="secondary info">
-    <%= time_tag(entity.created_at) %>
-  </div>
+  <div><%= biovision_votable_link(entity.votable) %></div>
+  <div class="info"><%= admin_user_link(entity.user) %></div>
+  <div class="secondary info"><%= time_tag(entity.created_at) %></div>
 </div>

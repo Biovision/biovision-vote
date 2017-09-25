@@ -16,11 +16,12 @@ ru:
       vote: "Голос"
     attributes:
       vote:
+        agent: "Агент пользователя"
+        delta: "Изменение"
+        ip: "IP-адрес"
         user: "Пользователь"
         votable: "Объект голосования"
-        agent: "Агент пользователя"
-        ip: "IP-адрес"
-        delta: "Изменение"
+        votable_id: "Объект голосования"
   admin:
     votes:
       nav_item:
