@@ -9,6 +9,19 @@ module Biovision
           image_tag('biovision/vote/icons/downvote-active.svg', alt: '⇩')
         end
       end
+
+      # @param [ApplicationRecord] entity
+      def biovision_votable_link(entity)
+        text = entity.model_name.human
+        if entity.respond_to?(:title)
+          text << " «#{entity.title}»"
+        elsif entity.respond_to?(:name)
+          text << " «#{entity.name}»"
+        else
+          text << " №#{entity.id}"
+        end
+        link_to(text, entity)
+      end
     end
   end
 end

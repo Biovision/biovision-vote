@@ -11,7 +11,7 @@ Biovision::Vote
 Для возможности голосовать за модель у неё должны быть поля такого вида:
 
 ```ruby
-class AddVotableToModels < ActiveRecord::Migration[5.0]
+class AddVotableToModels < ActiveRecord::Migration[5.1]
   def change
     add_column :posts, :upvote_count, :integer, default: 0, null: false
     add_column :posts, :downvote_count, :integer, default: 0, null: false
@@ -26,9 +26,11 @@ end
 Допустимость голосования определяется методом `VotableItem#votable_by?`, который
 можно переопределить в моделях, если требуется.
 
-Для ссылки на голосуемый объект в админке и за её пределами нужно в какой-нибудь
-помощник добавить методы `votable_item_link(entity)` 
-и `admin_votable_item_link(entity)`.
+Чтобы заработал фронт, нужно в `application.js` добавить это:
+
+```javascript
+//= require biovision/vote/biovision-vote.js
+```
 
 ## Installation
 Add this line to your application's Gemfile:
