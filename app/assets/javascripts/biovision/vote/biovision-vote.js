@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-vote]').forEach(function (button) {
         const container = button.closest('[data-vote-url]');
         if (container) {
-            console.log(container);
             if (container.classList.contains('vote-active')) {
                 const url = container.getAttribute('data-vote-url');
 
