@@ -9,6 +9,7 @@ class CreateVotes < ActiveRecord::Migration[5.1]
         t.integer :delta, limit: 2, default: 0, null: false
         t.integer :votable_id, null: false
         t.string :votable_type, null: false
+        t.string :slug, index: true
       end
     end
   end

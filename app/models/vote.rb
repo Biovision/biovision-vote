@@ -1,8 +1,6 @@
 class Vote < ApplicationRecord
   include HasOwner
 
-  PER_PAGE = 20
-
   METRIC_VOTE_HIT     = 'votes.any.hit'
   METRIC_UPVOTE_HIT   = 'votes.upvote.hit'
   METRIC_DOWNVOTE_HIT = 'votes.downvote.hit'
@@ -12,22 +10,35 @@ class Vote < ApplicationRecord
   belongs_to :votable, polymorphic: true
 
   before_validation { self.delta = (delta.to_i > 0 ? 1 : -1) }
-  validates_uniqueness_of :votable_id, scope: [:user_id, :votable_type]
+  before_validation :generate_slug
+  validates_uniqueness_of :votable_id, scope: [:slug, :votable_type]
 
   after_create :add_vote_result
   after_destroy :discard_vote_result
 
   scope :recent, -> { order('id desc') }
+  scope :list_for_administration, -> { recent }
 
   # @param [Integer] page
   def self.page_for_administration(page = 1)
-    recent.page(page).per(PER_PAGE)
+    list_for_administration.page(page)
   end
 
   # @param [User] user
+  # @param [String] ip
+  # @param [Integer] agent_id
+  def self.slug_string(user, ip, agent_id)
+    if user.nil?
+      "#{ip}:#{agent_id}"
+    else
+      user.id.to_s
+    end
+  end
+
+  # @param [String] slug
   # @param [ApplicationRecord] votable
-  def self.voted?(user, votable)
-    exists?(user: user, votable: votable)
+  def self.voted?(slug, votable)
+    exists?(slug: slug, votable: votable)
   end
 
   # @param [User] user
@@ -56,7 +67,15 @@ class Vote < ApplicationRecord
     owned_by?(user) || UserPrivilege.user_has_privilege?(:user, :moderator)
   end
 
+  def current_slug
+    self.class.slug_string(user, ip, agent_id)
+  end
+
   private
+
+  def generate_slug
+    self.slug = current_slug
+  end
 
   def add_vote_result
     votable.vote_result    = votable.vote_result + delta

@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     const result = JSON.parse(this.responseText);
 
                     $button.classList.remove('switch');
-                    if (result.hasOwnProperty('data')) {
-                        const vote_type = result['data']['vote_type'];
-                        const vote_result = result['data']['vote_result'];
+                    if (result.hasOwnProperty('meta')) {
+                        const vote_type = result['meta']['vote_type'];
+                        const vote_result = result['meta']['vote_result'];
 
                         $container.classList.remove('voted-none');
                         $container.classList.add('voted-' + vote_type);

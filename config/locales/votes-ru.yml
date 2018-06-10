@@ -19,14 +19,19 @@ ru:
         agent: "Агент пользователя"
         delta: "Изменение"
         ip: "IP-адрес"
+        slug: "Идентификатор"
         user: "Пользователь"
         votable: "Объект голосования"
         votable_id: "Объект голосования"
   admin:
     votes:
       nav_item:
-        text: "Голоса пользователей"
         description: "Просмотр голосов пользователей"
+        text: "Голоса пользователей"
       index:
-        title: "Голоса, страница %{page}"
         heading: "Голоса пользователей"
+        title: "Голоса, страница %{page}"
+    index:
+      dashboard:
+        biovision_vote:
+          heading: "Голоса пользователей"

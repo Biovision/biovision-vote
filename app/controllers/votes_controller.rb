@@ -4,10 +4,10 @@ class VotesController < ApplicationController
   # post /votes
   def create
     @entity = Vote.new(creation_parameters)
-    if @entity.votable.votable_by?(current_user)
+    if @entity.votable.vote_applicable?(@entity)
       process_vote
     else
-      render :result, status: :unauthorized
+      render :result, status: :unprocessable_entity
     end
   end
 
@@ -32,7 +32,7 @@ class VotesController < ApplicationController
   end
 
   def process_vote
-    if Vote.voted?(current_user, @entity.votable)
+    if Vote.voted?(@entity.current_slug, @entity.votable)
       render :result, status: :conflict
     else
       count_vote

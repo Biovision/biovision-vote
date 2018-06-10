@@ -1,0 +1,37 @@
+en:
+  upvote_count:
+    zero: "no upvotes"
+    one: "%{count} upvote"
+    few: "%{count} upvotes"
+    many: "%{count} upvotes"
+    other: "%{count} upvotes"
+  downvote_count:
+    zero: "no downvotes"
+    one: "%{count} downvote"
+    few: "%{count} downvotes"
+    many: "%{count} downvotes"
+    other: "%{count} downvotes"
+  activerecord:
+    models:
+      vote: "Vote"
+    attributes:
+      vote:
+        agent: "User agent"
+        delta: "Delta"
+        ip: "IP address"
+        slug: "Slug"
+        user: "User"
+        votable: "Votable entity"
+        votable_id: "Votable entity"
+  admin:
+    votes:
+      nav_item:
+        description: "Manage user votes"
+        text: "User votes"
+      index:
+        heading: "User votes"
+        title: "User votes, page %{page}"
+    index:
+      dashboard:
+        biovision_vote:
+          heading: "User votes"
