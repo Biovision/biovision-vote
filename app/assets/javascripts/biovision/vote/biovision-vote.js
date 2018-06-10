@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 };
 
-                const on_failure = function(result) {
+                const on_failure = function (result) {
                     $button.classList.remove('switch');
                     $button.classList.add('error');
                     handle_ajax_failure(result);
@@ -41,5 +41,58 @@ document.addEventListener('DOMContentLoaded', function () {
 
             $container.classList.remove('active');
         });
+    });
+
+    document.querySelectorAll('[data-vote]').forEach(function (button) {
+        const container = button.closest('[data-vote-url]');
+        if (container) {
+            console.log(container);
+            if (container.classList.contains('vote-active')) {
+                const url = container.getAttribute('data-vote-url');
+
+                button.addEventListener('click', function () {
+                    const delta = this.getAttribute('data-vote') === 'up' ? 1 : -1;
+                    const pressedButton = this;
+
+                    /**
+                     * Во время голосования состояние переключается
+                     * на vote-inactive, поэтому проверяем ещё раз
+                     */
+                    if (container.classList.contains('vote-active')) {
+                        const data = {
+                            vote: {
+                                votable_id: container.getAttribute('data-votable-id'),
+                                votable_type: container.getAttribute('data-votable-type'),
+                                delta: delta,
+                            }
+                        };
+
+                        const request = Biovision.jsonAjaxRequest('POST', url, function () {
+                            if (this.responseText) {
+                                const response = JSON.parse(this.responseText);
+
+                                if (response.hasOwnProperty('meta')) {
+                                    if (delta > 0) {
+                                        pressedButton.innerHTML = response.meta['upvote_count'];
+                                    } else {
+                                        pressedButton.innerHTML = response.meta['downvote_count'];
+                                    }
+                                    container.classList.remove('voted-none');
+                                    container.classList.add('voted-' + response.meta['vote_type']);
+                                }
+                            } else {
+                                container.classList.remove('vote-inactive');
+                                container.classList.add('vote-active');
+                            }
+                        });
+
+                        container.classList.remove('vote-active');
+                        container.classList.add('vote-inactive');
+
+                        request.send(JSON.stringify(data));
+                    }
+                });
+            }
+        }
     });
 });
