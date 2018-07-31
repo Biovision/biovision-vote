@@ -1,5 +1,5 @@
 class VotesController < ApplicationController
-  before_action :set_entity, only: [:destroy]
+  before_action :set_entity, only: :destroy
 
   # post /votes
   def create
@@ -28,7 +28,7 @@ class VotesController < ApplicationController
 
   def creation_parameters
     parameters = params.require(:vote).permit(Vote.creation_parameters)
-    parameters.merge(owner_for_entity(true))
+    parameters.merge(owner_for_entity(true)).merge(slug: visitor_slug)
   end
 
   def process_vote

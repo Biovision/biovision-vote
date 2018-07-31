@@ -1,0 +1,37 @@
+sv:
+  upvote_count:
+    zero: "Inga röster upp"
+    one: "%{count} rösta upp"
+    few: "%{count} röster upp"
+    many: "%{count} röster upp"
+    other: "%{count} röster upp"
+  downvote_count:
+    zero: "Inga röster nere"
+    one: "%{count} rösta ner"
+    few: "%{count} röster ner"
+    many: "%{count} röster ner"
+    other: "%{count} röster ner"
+  activerecord:
+    models:
+      vote: "Omröstning"
+    attributes:
+      vote:
+        agent: "Användaragent"
+        delta: "Delta"
+        ip: "IP-adress"
+        slug: "Pollett"
+        user: "Användare"
+        votable: "Röstade-entitet"
+        votable_id: "Röstade-entitet"
+  admin:
+    votes:
+      nav_item:
+        description: "Hantera användarnas röster"
+        text: "Röster av användare"
+      index:
+        heading: "Röster av användare"
+        title: "Röster av användare, sida %{page}"
+    index:
+      dashboard:
+        biovision_vote:
+          heading: "Röster av användare"

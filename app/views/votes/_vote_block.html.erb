@@ -1,17 +1,16 @@
 <%
-  slug = Vote.slug_string(current_user, request.env['HTTP_X_REAL_IP'] || request.remote_ip, agent.id)
-  block_class = votable.vote_applicable?(slug) ? 'active' : ''
+  block_class = votable.vote_applicable?(visitor_slug) ? 'active' : ''
 %>
-<div class="vote-block <%= block_class %> voted-<%= votable.voted(slug) %>" data-id="<%= votable.id %>">
+<div class="vote-block <%= block_class %> voted-<%= votable.voted(visitor_slug) %>" data-id="<%= votable.id %>">
   <div class="vote upvote"></div>
   <div class="result"><%= votable.vote_result %></div>
   <div class="vote downvote"></div>
   <% unless block_class.blank? %>
-      <% entity = Vote.new(votable: votable) %>
-      <%= form_tag votes_path, method: :post do %>
-          <%= hidden_field_tag 'vote[votable_id]', entity.votable_id, id: "vote_votable_id_#{votable.id}" %>
-          <%= hidden_field_tag 'vote[votable_type]', entity.votable_type, id: "vote_votable_type_#{votable.id}" %>
-          <%= hidden_field_tag 'vote[delta]', '0', id: "vote_delta_#{votable.id}" %>
+      <% entity = Vote.new(votable: votable, delta: 0) %>
+      <%= form_with(model: entity, local: true) do %>
+          <%= f.hidden_field :votable_id, id: "vote_votable_id_#{votable.id}" %>
+          <%= f.hidden_field :votable_type, id: "vote_votable_type_#{votable.id}" %>
+          <%= f.hidden_field :delta, id: "vote_delta_#{votable.id}" %>
       <% end %>
   <% end %>
 </div>

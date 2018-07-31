@@ -10,7 +10,7 @@ class Vote < ApplicationRecord
   belongs_to :votable, polymorphic: true
 
   before_validation { self.delta = (delta.to_i > 0 ? 1 : -1) }
-  before_validation :generate_slug
+  before_validation { self.slug = current_slug if slug.blank? }
   validates_uniqueness_of :votable_id, scope: [:slug, :votable_type]
 
   after_create :add_vote_result
@@ -51,7 +51,7 @@ class Vote < ApplicationRecord
   end
 
   def self.creation_parameters
-    %i(votable_id votable_type delta)
+    %i[delta votable_id votable_type]
   end
 
   def upvote?
@@ -73,14 +73,11 @@ class Vote < ApplicationRecord
 
   private
 
-  def generate_slug
-    self.slug = current_slug
-  end
-
   def add_vote_result
     votable.vote_result    = votable.vote_result + delta
     votable.upvote_count   = votable.upvote_count + 1 if upvote?
     votable.downvote_count = votable.downvote_count + 1 if downvote?
+    votable.vote_impact(delta) if votable.respond_to?(:vote_impact)
     votable.save
   end
 
