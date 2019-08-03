@@ -1,9 +1,19 @@
+# frozen_string_literal: true
+
+# Vote
+#
+# Attributes:
+#   agent_id [Agent], optional
+#   created_at [DateTime]
+#   delta [Integer]
+#   ip [Inet], optional
+#   slug [String]
+#   updated_at [DateTime]
+#   user_id [User], optional
+#   votable_id [Integer]
+#   votable_type [String]
 class Vote < ApplicationRecord
   include HasOwner
-
-  METRIC_VOTE_HIT     = 'votes.any.hit'
-  METRIC_UPVOTE_HIT   = 'votes.upvote.hit'
-  METRIC_DOWNVOTE_HIT = 'votes.downvote.hit'
 
   belongs_to :user, optional: true
   belongs_to :agent, optional: true

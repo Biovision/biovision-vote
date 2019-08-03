@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
+# Handling votes
 class VotesController < ApplicationController
+  before_action :set_handler
   before_action :set_entity, only: :destroy
 
   # post /votes
@@ -26,6 +30,11 @@ class VotesController < ApplicationController
     end
   end
 
+  def set_handler
+    slug = Biovision::Components::VoteComponent::SLUG
+    @handler = Biovision::Components::BaseComponent.handler(slug, current_user)
+  end
+
   def creation_parameters
     parameters = params.require(:vote).permit(Vote.creation_parameters)
     parameters.merge(owner_for_entity(true)).merge(slug: visitor_slug)
@@ -41,9 +50,7 @@ class VotesController < ApplicationController
 
   def count_vote
     @entity.save
-    name = @entity.upvote? ? Vote::METRIC_UPVOTE_HIT : Vote::METRIC_DOWNVOTE_HIT
-    Metric.register(name)
-    Metric.register(Vote::METRIC_VOTE_HIT)
+    @handler.count_vote(@entity)
 
     render :result, status: :created
   end

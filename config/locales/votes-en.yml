@@ -35,3 +35,7 @@ en:
       dashboard:
         biovision_vote:
           heading: "User votes"
+  biovision:
+    components:
+      vote:
+        name: "Vote"

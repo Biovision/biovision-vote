@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     handle_ajax_failure(result);
                 };
 
-                const request = Biovision.new_ajax_request('POST', $form.getAttribute('action'), on_success, on_failure);
+                const request = Biovision.jsonAjaxRequest('POST', $form.getAttribute('action'), on_success, on_failure);
 
                 $button.classList.add('switch');
 

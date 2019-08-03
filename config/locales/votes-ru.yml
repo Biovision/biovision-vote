@@ -16,9 +16,7 @@ ru:
       vote: "Голос"
     attributes:
       vote:
-        agent: "Агент пользователя"
         delta: "Изменение"
-        ip: "IP-адрес"
         slug: "Идентификатор"
         user: "Пользователь"
         votable: "Объект голосования"
@@ -35,3 +33,7 @@ ru:
       dashboard:
         biovision_vote:
           heading: "Голоса пользователей"
+  biovision:
+    components:
+      vote:
+        name: "Голосование"

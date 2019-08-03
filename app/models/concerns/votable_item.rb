@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module VotableItem
   extend ActiveSupport::Concern
 
   included do
-    has_many :votes, as: :votable, dependent: :destroy
+    has_many :votes, as: :votable, dependent: :delete_all
   end
 
   # @param [Vote|String] vote_or_slug
@@ -25,6 +27,7 @@ module VotableItem
   def voted(vote_or_slug)
     vote = vote_or_slug.is_a?(String) ? votes.find_by(slug: vote_or_slug) : vote_or_slug
     return :none if vote&.id.nil?
+
     vote.upvote? ? :upvote : :downvote
   end
 end
