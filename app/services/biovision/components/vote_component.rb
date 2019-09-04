@@ -9,8 +9,8 @@ module Biovision
       METRIC_DOWNVOTE_HIT = 'votes.downvote.hit'
       SLUG = 'vote'
 
-      def allow?(options = {})
-        UserPrivilege.user_has_privilege?(user, :moderator)
+      def self.privilege_names
+        %w[moderator]
       end
 
       # @param [Vote] entity

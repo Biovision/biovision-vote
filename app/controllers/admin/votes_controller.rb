@@ -9,7 +9,12 @@ class Admin::VotesController < AdminController
 
   private
 
+  def component_slug
+    Biovision::Components::VoteComponent::SLUG
+  end
+
   def restrict_access
-    require_privilege :moderator
+    error = 'Managing votes is not allowed'
+    handle_http_401(error) unless component_handler.allow?('moderator')
   end
 end

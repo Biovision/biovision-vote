@@ -2,7 +2,6 @@
 
 # Handling votes
 class VotesController < ApplicationController
-  before_action :set_handler
   before_action :set_entity, only: :destroy
 
   # post /votes
@@ -23,16 +22,15 @@ class VotesController < ApplicationController
 
   private
 
+  def component_slug
+    Biovision::Components::VoteComponent::SLUG
+  end
+
   def set_entity
     @entity = Vote.find_by(id: params[:id])
     if @entity.nil? || !@entity.editable_by?(current_user)
       handle_http_404('Cannot find vote')
     end
-  end
-
-  def set_handler
-    slug = Biovision::Components::VoteComponent::SLUG
-    @handler = Biovision::Components::BaseComponent.handler(slug, current_user)
   end
 
   def creation_parameters
@@ -50,7 +48,7 @@ class VotesController < ApplicationController
 
   def count_vote
     @entity.save
-    @handler.count_vote(@entity)
+    component_handler.count_vote(@entity)
 
     render :result, status: :created
   end
