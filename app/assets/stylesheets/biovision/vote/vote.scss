@@ -5,23 +5,27 @@
 
   .vote {
     background: no-repeat center / cover;
+    border: none;
+    cursor: pointer;
     height: 1.2rem;
     width: 1.2rem;
-  }
 
-  &.active {
-    .vote {
-      cursor: pointer;
+    &:focus {
+      box-shadow: 0 0 .2rem rgba(0, 0, 0, .5);
     }
 
-    &.voted-none {
-      .upvote:hover {
-        background-image: image_url('biovision/vote/icons/upvote-active.svg');
-      }
+    &:disabled {
+      cursor: default;
+    }
+  }
 
-      .downvote:hover {
-        background-image: image_url('biovision/vote/icons/downvote-active.svg');
-      }
+  &.voted-none {
+    .upvote:not(:disabled):hover {
+      background-image: image_url('biovision/vote/icons/upvote-active.svg');
+    }
+
+    .downvote:not(:disabled):hover {
+      background-image: image_url('biovision/vote/icons/downvote-active.svg');
     }
   }
 

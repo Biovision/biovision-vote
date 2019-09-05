@@ -1,97 +1,66 @@
-'use strict';
+"use strict";
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.vote-block.active .vote').forEach(function (element) {
-        element.addEventListener('click', function () {
-            const $button = this;
-            const $container = $button.closest('.vote-block');
-            const votable_id = $container.getAttribute('data-id');
-            const upvote = $button.classList.contains('upvote');
+const Votes = {
+    initialized: false,
+    autoInitComponents: true,
+    components: {}
+};
 
-            document.getElementById('vote_delta_' + votable_id).value = upvote ? '1' : '-1';
-
-            if ($container.classList.contains('active')) {
-                const $form = $container.querySelector('form');
-                const on_success = function () {
-                    const result = JSON.parse(this.responseText);
-
-                    $button.classList.remove('switch');
-                    if (result.hasOwnProperty('meta')) {
-                        const vote_type = result['meta']['vote_type'];
-                        const vote_result = result['meta']['vote_result'];
-
-                        $container.classList.remove('voted-none');
-                        $container.classList.add('voted-' + vote_type);
-                        $container.querySelector('.result').innerHTML = vote_result;
-                    }
-                };
-
-                const on_failure = function (result) {
-                    $button.classList.remove('switch');
-                    $button.classList.add('error');
-                    handle_ajax_failure(result);
-                };
-
-                const request = Biovision.jsonAjaxRequest('POST', $form.getAttribute('action'), on_success, on_failure);
-
-                $button.classList.add('switch');
-
-                request.send(new FormData($form));
+Votes.components.voteButtons = {
+    initialized: false,
+    buttons: [],
+    url: "/votes",
+    selector: ".vote-block .vote",
+    init: function () {
+        document.querySelectorAll(this.selector).forEach(this.apply);
+        this.initialized = true;
+    },
+    apply: function (button) {
+        const component = Votes.components.voteButtons;
+        component.buttons.push(button);
+        button.addEventListener("click", component.click);
+    },
+    click: function (event) {
+        const component = Votes.components.voteButtons;
+        const button = event.target;
+        const delta = button.classList.contains("upvote") ? 1 : -1;
+        const container = button.closest(".vote-block");
+        const data = {
+            "vote": {
+                "votable_id": container.getAttribute("data-id"),
+                "votable_type": container.getAttribute("data-type"),
+                "delta": delta
             }
+        };
 
-            $container.classList.remove('active');
+        container.querySelectorAll(".vote").forEach(function (element) {
+            element.disabled = true;
         });
-    });
 
-    document.querySelectorAll('[data-vote]').forEach(function (button) {
-        const container = button.closest('[data-vote-url]');
-        if (container) {
-            if (container.classList.contains('vote-active')) {
-                const url = container.getAttribute('data-vote-url');
+        const onSuccess = function () {
+            const result = JSON.parse(this.responseText);
+            if (result.hasOwnProperty("meta")) {
+                const meta = result.meta;
 
-                button.addEventListener('click', function () {
-                    const delta = this.getAttribute('data-vote') === 'up' ? 1 : -1;
-                    const pressedButton = this;
-
-                    /**
-                     * Во время голосования состояние переключается
-                     * на vote-inactive, поэтому проверяем ещё раз
-                     */
-                    if (container.classList.contains('vote-active')) {
-                        const data = {
-                            vote: {
-                                votable_id: container.getAttribute('data-votable-id'),
-                                votable_type: container.getAttribute('data-votable-type'),
-                                delta: delta,
-                            }
-                        };
-
-                        const request = Biovision.jsonAjaxRequest('POST', url, function () {
-                            if (this.responseText) {
-                                const response = JSON.parse(this.responseText);
-
-                                if (response.hasOwnProperty('meta')) {
-                                    if (delta > 0) {
-                                        pressedButton.innerHTML = response.meta['upvote_count'];
-                                    } else {
-                                        pressedButton.innerHTML = response.meta['downvote_count'];
-                                    }
-                                    container.classList.remove('voted-none');
-                                    container.classList.add('voted-' + response.meta['vote_type']);
-                                }
-                            } else {
-                                container.classList.remove('vote-inactive');
-                                container.classList.add('vote-active');
-                            }
-                        });
-
-                        container.classList.remove('vote-active');
-                        container.classList.add('vote-inactive');
-
-                        request.send(JSON.stringify(data));
-                    }
-                });
+                container.classList.remove("voted-none");
+                container.classList.add("voted-" + meta["vote_type"]);
+                container.querySelector(".result").innerHTML = meta["vote_result"];
+                button.classList.remove("switch");
             }
-        }
-    });
-});
+        };
+
+        const onFailure = function () {
+            button.classList.remove("switch");
+            button.classList.add("error");
+
+            Biovision.handleAjaxFailure();
+        };
+
+        const request = Biovision.jsonAjaxRequest("POST", component.url, onSuccess, onFailure);
+
+        button.classList.add("switch");
+        request.send(JSON.stringify(data));
+    }
+};
+
+Biovision.components.votes = Votes;
