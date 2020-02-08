@@ -5,6 +5,6 @@
   data-type="<%= votable.class.to_s %>"
 >
   <button class="vote upvote"<%= postfix %>></button>
-  <div class="result"><%= votable.vote_result %></div>
+  <div class="result"><%= votable.data.dig('votes', 'total').to_i %></div>
   <button class="vote downvote"<%= postfix %>></button>
 </div>

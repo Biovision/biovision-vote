@@ -37,5 +37,5 @@ sv:
           heading: "Röster av användare"
   biovision:
     components:
-      vote:
+      votes:
         name: "Röster"

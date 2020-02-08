@@ -3,11 +3,10 @@
 module Biovision
   module Components
     # Component for votes
-    class VoteComponent < BaseComponent
+    class VotesComponent < BaseComponent
       METRIC_VOTE_HIT = 'votes.any.hit'
       METRIC_UPVOTE_HIT = 'votes.upvote.hit'
       METRIC_DOWNVOTE_HIT = 'votes.downvote.hit'
-      SLUG = 'vote'
 
       def self.privilege_names
         %w[moderator]

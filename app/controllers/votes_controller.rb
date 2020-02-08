@@ -22,8 +22,8 @@ class VotesController < ApplicationController
 
   private
 
-  def component_slug
-    Biovision::Components::VoteComponent::SLUG
+  def component_class
+    Biovision::Components::VotesComponent
   end
 
   def set_entity

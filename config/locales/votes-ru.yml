@@ -35,7 +35,7 @@ ru:
           heading: "Голоса пользователей"
   biovision:
     components:
-      vote:
+      votes:
         name: "Голосование"
         privileges:
           moderator: "Модератор"

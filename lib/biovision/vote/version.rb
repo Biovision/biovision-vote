@@ -2,6 +2,6 @@
 
 module Biovision
   module Vote
-    VERSION = '0.4.190905.1'
+    VERSION = '0.5.200209.0'
   end
 end

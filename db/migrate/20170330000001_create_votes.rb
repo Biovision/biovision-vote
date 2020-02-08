@@ -15,6 +15,7 @@ class CreateVotes < ActiveRecord::Migration[5.2]
 
   def create_votes
     create_table :votes, comment: 'Vote' do |t|
+      t.uuid :uuid, null: false
       t.references :user, foreign_key: { on_update: :cascade, on_delete: :cascade }
       t.references :agent, foreign_key: { on_update: :cascade, on_delete: :nullify }
       t.inet :ip
@@ -24,9 +25,11 @@ class CreateVotes < ActiveRecord::Migration[5.2]
       t.string :votable_type, null: false
       t.string :slug, index: true
     end
+
+    add_index :votes, :uuid, unique: true
   end
 
   def create_component
-    BiovisionComponent.create(slug: Biovision::Components::VoteComponent::SLUG)
+    BiovisionComponent.create(slug: Biovision::Components::VotesComponent.slug)
   end
 end

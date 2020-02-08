@@ -10,10 +10,12 @@
 #   slug [String]
 #   updated_at [DateTime]
 #   user_id [User], optional
+#   uuid [UUID]
 #   votable_id [Integer]
 #   votable_type [String]
 class Vote < ApplicationRecord
   include HasOwner
+  include HasUuid
 
   belongs_to :user, optional: true
   belongs_to :agent, optional: true
@@ -74,7 +76,7 @@ class Vote < ApplicationRecord
 
   # @param [User] user
   def editable_by?(user)
-    owned_by?(user) || UserPrivilege.user_has_privilege?(:user, :moderator)
+    owned_by?(user) || user&.super_user?
   end
 
   def current_slug
@@ -84,17 +86,11 @@ class Vote < ApplicationRecord
   private
 
   def add_vote_result
-    votable.vote_result    = votable.vote_result + delta
-    votable.upvote_count   = votable.upvote_count + 1 if upvote?
-    votable.downvote_count = votable.downvote_count + 1 if downvote?
+    votable.add_vote_result(delta)
     votable.vote_impact(delta) if votable.respond_to?(:vote_impact)
-    votable.save
   end
 
   def discard_vote_result
-    votable.vote_result    = votable.vote_result - delta
-    votable.upvote_count   = votable.upvote_count - 1 if upvote?
-    votable.downvote_count = votable.downvote_count - 1 if downvote?
-    votable.save
+    votable.discard_vote_result(delta)
   end
 end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Model has votes
 module VotableItem
   extend ActiveSupport::Concern
 
@@ -16,10 +17,10 @@ module VotableItem
   # @param [String|Vote] vote_or_slug
   def vote_data(vote_or_slug)
     {
-        upvote_count: upvote_count,
-        downvote_count: downvote_count,
-        vote_result: vote_result,
-        vote_type: voted(vote_or_slug)
+      upvote_count: data.dig('votes', 'up'),
+      downvote_count: data.dig('votes', 'down'),
+      vote_result: data.dig('votes', 'total'),
+      vote_type: voted(vote_or_slug)
     }
   end
 
@@ -29,5 +30,31 @@ module VotableItem
     return :none if vote&.id.nil?
 
     vote.upvote? ? :upvote : :downvote
+  end
+
+  # @param [Integer] delta
+  def add_vote_result(delta)
+    return unless has_attribute?(:data)
+
+    vote_data = data['votes'].to_h
+    key = delta.positive? ? 'up' : 'down'
+    vote_data[key] = vote_data.key?(key) ? vote_data[key].to_i + 1 : 1
+    vote_data['total'] = vote_data.key?('total') ? vote_data['total'] + delta : delta
+    self.data['votes'] = vote_data
+
+    save
+  end
+
+  # @param [Integer] delta
+  def discard_vote_result(delta)
+    return unless has_attribute?(:data)
+
+    vote_data = data['votes'].to_h
+    key = delta.positive? ? 'up' : 'down'
+    vote_data[key] = vote_data[key].to_i - 1 if vote_data[key].to_i.positive?
+    vote_data['total'] = vote_data['total'].to_i - delta
+    self.data['votes'] = vote_data
+
+    save
   end
 end
